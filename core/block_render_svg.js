@@ -35,7 +35,7 @@ goog.require('Blockly.BlockSvg');
  * Horizontal space between elements.
  * @const
  */
-Blockly.BlockSvg.SEP_SPACE_X = 30;
+Blockly.BlockSvg.SEP_SPACE_X = 10;
 /**
  * Vertical space between elements.
  * @const
