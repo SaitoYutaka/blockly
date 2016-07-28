@@ -63,63 +63,81 @@ Blockly.BlockSvg.TAB_WIDTH = 30;
 ```
 ![TAB_WIDTH 30](./images/TAB_WIDTH_30.jpg)
 
-
-# Blockly.BlockSvg.prototype.renderDrawTop_
+# Blockly.BlockSvg.prototype.renderDraw_
+![TAB_WIDTH 30](./images/setItemto000.jpg)
 ```javascript
 /**
- * Render the top edge of the block.
- * @param {!Array.<string>} steps Path of block outline.
- * @param {!Array.<string>} highlightSteps Path of block highlights.
- * @param {number} rightEdge Minimum width of block.
+ * Draw the path of the block.
+ * Move the fields to the correct locations.
+ * @param {number} iconWidth Offset of first row due to icons.
+ * @param {!Array.<!Array.<!Object>>} inputRows 2D array of objects, each
+ *     containing position information.
  * @private
  */
-Blockly.BlockSvg.prototype.renderDrawTop_ =
-    function(steps, highlightSteps, rightEdge) {
-  /* eslint-disable indent */
-  // Position the cursor at the top-left starting point.
-  if (this.squareTopLeftCorner_) {
-    steps.push('m 0,0');
-    highlightSteps.push('m 0.5,0.5');
-    if (this.startHat_) {
-      steps.push(Blockly.BlockSvg.START_HAT_PATH);
-      highlightSteps.push(this.RTL ?
-          Blockly.BlockSvg.START_HAT_HIGHLIGHT_RTL :
-          Blockly.BlockSvg.START_HAT_HIGHLIGHT_LTR);
-    }
-  } else {
-    steps.push(Blockly.BlockSvg.TOP_LEFT_CORNER_START); /* CHECK!! */
-    highlightSteps.push(this.RTL ?
-        Blockly.BlockSvg.TOP_LEFT_CORNER_START_HIGHLIGHT_RTL :
-        Blockly.BlockSvg.TOP_LEFT_CORNER_START_HIGHLIGHT_LTR);
-    // Top-left rounded corner.
-    steps.push(Blockly.BlockSvg.TOP_LEFT_CORNER); /* CHECK!! */
-    highlightSteps.push(Blockly.BlockSvg.TOP_LEFT_CORNER_HIGHLIGHT);
-  }
-
-  // Top edge.
-  if (this.previousConnection) {
-    steps.push('H', Blockly.BlockSvg.NOTCH_WIDTH - 15);
-    highlightSteps.push('H', Blockly.BlockSvg.NOTCH_WIDTH - 15);
-    steps.push(Blockly.BlockSvg.NOTCH_PATH_LEFT);
-    highlightSteps.push(Blockly.BlockSvg.NOTCH_PATH_LEFT_HIGHLIGHT);
-
-    var connectionX = (this.RTL ?
-        -Blockly.BlockSvg.NOTCH_WIDTH : Blockly.BlockSvg.NOTCH_WIDTH);
-    this.previousConnection.setOffsetInBlock(connectionX, 0);
-  }
-  steps.push('H', rightEdge); /* CHECK!! */
-  highlightSteps.push('H', rightEdge - 0.5);
-  this.width = rightEdge;
-};  /* eslint-enable indent */
+Blockly.BlockSvg.prototype.renderDraw_ = function(iconWidth, inputRows) {
+  /*****/
+  // Assemble the block's path.
+  var steps = [];
+  /*****/
+  this.renderDrawTop_(steps, highlightSteps, inputRows.rightEdge);
+  var cursorY = this.renderDrawRight_(steps, highlightSteps, inlineSteps,
+  highlightInlineSteps, inputRows, iconWidth);
+  this.renderDrawBottom_(steps, highlightSteps, cursorY);
+  this.renderDrawLeft_(steps, highlightSteps);
+  /*****/
+};
 ```
+
+
+## renderDrawTop_
 ```html
 <html>
 <body>
 <svg height="210" width="400">
-  <path style="fill:none;stroke:#FF0000;stroke-width:1px"
-   d="m 0,8 A 8,8 0 0,1 8,0 H 192.21038818359375"/>
+  <path style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+  d="m 0,8 A 8,8 0 0,1 8,0 H 15 l 6,4 3,0 6,-4 H 117.97848510742188" />
 </svg>
 </body>
 </html>
 ```
-![TAB_WIDTH 30](./images/renderDrawTop_000.jpg)
+![TAB_WIDTH 30](./images/renderDrawTop_001.jpg)
+
+## renderDrawRight_
+```html
+<html>
+<body>
+<svg height="210" width="400">
+  <path style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+  d="m 0,8 A 8,8 0 0,1 8,0 H 15 l 6,4 3,0 6,-4 H 117.97848510742188 v 5 c 0,10 -8,-8 -8,7.5 s 8,-2.5 8,7.5 v 5" />
+</svg>
+</body>
+</html>
+```
+
+![TAB_WIDTH 30](./images/renderDrawRight_000.jpg)
+
+## renderDrawBottom_
+```html
+<html>
+<body>
+<svg height="210" width="400">
+  <path style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+  d="m 0,8 A 8,8 0 0,1 8,0 H 15 l 6,4 3,0 6,-4 H 117.97848510742188 v 5 c 0,10 -8,-8 -8,7.5 s 8,-2.5 8,7.5 v 5 H 29.5 l -6,4 -3,0 -6,-4 H 8 a 8,8 0 0,1 -8,-8" />
+</svg>
+</body>
+</html>
+```
+![TAB_WIDTH 30](./images/renderDrawBottom_000.jpg)
+
+## renderDrawLeft_
+```html
+<html>
+<body>
+<svg height="210" width="400">
+  <path style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+  d="m 0,8 A 8,8 0 0,1 8,0 H 15 l 6,4 3,0 6,-4 H 117.97848510742188 v 5 c 0,10 -8,-8 -8,7.5 s 8,-2.5 8,7.5 v 5 H 29.5 l -6,4 -3,0 -6,-4 H 8 a 8,8 0 0,1 -8,-8 z" />
+</svg>
+</body>
+</html>
+```
+![TAB_WIDTH 30](./images/renderDrawLeft_000.jpg)
