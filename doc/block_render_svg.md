@@ -141,3 +141,24 @@ Blockly.BlockSvg.prototype.renderDraw_ = function(iconWidth, inputRows) {
 </html>
 ```
 ![TAB_WIDTH 30](./images/renderDrawLeft_000.jpg)
+
+
+# renderDrawRight_
+```javascript
+/**
+ * Render the right edge of the block.
+ * @param {!Array.<string>} steps Path of block outline.
+ * @param {!Array.<string>} highlightSteps Path of block highlights.
+ * @param {!Array.<string>} inlineSteps Inline block outlines.
+ * @param {!Array.<string>} highlightInlineSteps Inline block highlights.
+ * @param {!Array.<!Array.<!Object>>} inputRows 2D array of objects, each
+ *     containing position information.
+ * @param {number} iconWidth Offset of first row due to icons.
+ * @return {number} Height of block.
+ * @private
+ */
+Blockly.BlockSvg.prototype.renderDrawRight_ = function(steps, highlightSteps,
+    inlineSteps, highlightInlineSteps, inputRows, iconWidth) {
+```
+
+## inputRows
